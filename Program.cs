@@ -6,7 +6,7 @@ namespace Foreach
     {
         static void Main(string[] args)
         {
-            var array = new SimpleClass<int>(new[] { 1, 2, 3, 4, 5});
+            var array = new Iterator<int>(1, 2, 3, 4, 5);
             foreach (var element in array)
             {
                 Console.WriteLine(element);
@@ -15,9 +15,9 @@ namespace Foreach
         }
     }
 
-    public class SimpleClass<T>
+    public class Iterator<T>
     {
-        private T[] _array;
+        private T[] _items;
         private int _position = -1;
         public T Current
         {
@@ -25,7 +25,7 @@ namespace Foreach
             {
                 try
                 {
-                    return this._array[this._position];
+                    return this._items[this._position];
                 }
                 catch (IndexOutOfRangeException)
                 {
@@ -33,14 +33,14 @@ namespace Foreach
                 } 
             }
         }
-        public SimpleClass (params T[] values)
+        public Iterator(params T[] values)
         {
-            this._array = values;
+            this._items = values;
         }
         public bool MoveNext()
         {
             this._position = this._position + 1;
-            if (this._position >= this._array.Length)
+            if (this._position >= this._items.Length)
             {
                 this._position = -1;
                 return false;
@@ -50,7 +50,7 @@ namespace Foreach
                 return true;
             }
         }
-        public SimpleClass<T> GetEnumerator()
+        public Iterator<T> GetEnumerator()
         {
             return this;
         }
